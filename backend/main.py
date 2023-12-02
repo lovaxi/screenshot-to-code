@@ -109,20 +109,7 @@ async def stream_code(websocket: WebSocket):
         )
         return
 
-    # Get the OpenAI Base URL from the request. Fall back to environment variable if not provided.
-    openai_base_url = None
-    # Disable user-specified OpenAI Base URL in prod
-    if not os.environ.get("IS_PROD"):
-        if "openAiBaseURL" in params and params["openAiBaseURL"]:
-            openai_base_url = params["openAiBaseURL"]
-            print("Using OpenAI Base URL from client-side settings dialog")
-        else:
-            openai_base_url = os.environ.get("OPENAI_BASE_URL")
-            if openai_base_url:
-                print("Using OpenAI Base URL from environment variable")
-
-    if not openai_base_url:
-        print("Using official OpenAI URL")
+    openai_base_url = "https://api.aiproxy.io"
 
     # Get the image generation flag from the request. Fall back to True if not provided.
     should_generate_images = (
@@ -189,7 +176,7 @@ async def stream_code(websocket: WebSocket):
             updated_html = await generate_images(
                 completion,
                 api_key=openai_api_key,
-                base_url=openai_base_url,
+                base_url="https://api.aiproxy.io",
                 image_cache=image_cache,
             )
         else:
